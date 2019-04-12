@@ -35,11 +35,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the camera position (View matrix)
         Matrix.setLookAtM(viewMatrix, 0, 0, 0, -5, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
-        //Rotate camera position
-        Matrix.rotateM(viewMatrix, 0, 45f,  0f, 1f, 0f);
+        //SENSOR_DELAY_NORMAL();
 
         // Calculate the projection and view transformation
         Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
+
+        //Rotate
+        Matrix.rotateM(vPMatrix, 0, 40f,  0f, 1f, 0f);
 
         // Draw shape
         mTriangle.draw(vPMatrix);

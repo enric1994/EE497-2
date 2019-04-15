@@ -1,9 +1,14 @@
 package com.example.ee497_2;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorManager;
 import android.opengl.EGLConfig;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.util.Log;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -17,6 +22,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[] projectionMatrix = new float[16];
     private final float[] viewMatrix = new float[16];
 
+    private float accx;
+
     @Override
     public void onSurfaceCreated(GL10 unused, javax.microedition.khronos.egl.EGLConfig config) {
         // Set the background frame color
@@ -25,8 +32,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mTriangle = new Triangle();
         // initialize a square
         mSquare = new Square();
+
+        Log.d("mylog", "Start Renderer");
+
+
     }
 
+    @Override
     public void onDrawFrame(GL10 unused) {
         // Redraw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
@@ -39,12 +51,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Calculate the projection and view transformation
         Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
 
+        accx = MyGLSurfaceView.getAcc();
+        Log.d("mylog",String.valueOf(accx));
+
         //Rotate
-        Matrix.rotateM(vPMatrix, 0, 40f,  0f, 1f, 0f);
+        Matrix.rotateM(vPMatrix, 0, accx,  0f, 1f, 0f);
 
         // Draw shape
         mTriangle.draw(vPMatrix);
     }
+
 
 
     @Override

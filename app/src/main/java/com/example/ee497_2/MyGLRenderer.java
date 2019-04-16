@@ -4,6 +4,8 @@ import android.opengl.EGLConfig;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.os.SystemClock;
+import android.util.Log;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -17,6 +19,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[] projectionMatrix = new float[16];
     //private final float[] projectionMatrix2 = new float[16];
     private final float[] viewMatrix = new float[16];
+
+    private float accx, accy, accz;
 
     @Override
     public void onSurfaceCreated(GL10 unused, javax.microedition.khronos.egl.EGLConfig config) {
@@ -40,14 +44,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Calculate the projection and view transformation
         Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
 
+        // Create a rotation transformation for the triangle
+
         //Rotate
-        Matrix.rotateM(vPMatrix, 0, 40f,  0f, 1f, 0f);
+        Matrix.rotateM(vPMatrix, 0, accx*10,  0f, 1f, 0f);
+
+        Log.d("mylog",String.valueOf(this.accx));
 
         // Draw shape
         mTriangle.draw(vPMatrix);
     }
-
-
 
 
     @Override
@@ -71,5 +77,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glCompileShader(shader);
 
         return shader;
+    }
+
+    public void setAcc(float accx, float accy, float accz){
+        this.accx=accx;
+        this.accy=accy;
+        this.accz=accz;
     }
 }

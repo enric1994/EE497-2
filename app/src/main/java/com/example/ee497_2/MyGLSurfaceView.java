@@ -26,24 +26,14 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
         // Set the Renderer for drawing on the GLSurfaceView
         setRenderer(renderer);
 
-        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+//        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         mAcc = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, mAcc, SensorManager.SENSOR_DELAY_NORMAL);
         Log.d("mylog", "start reading...");
 
-
     }
-
-//    @Override
-//    public final void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.main);
-//
-//        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-//        mLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-//    }
 
     @Override
     public final void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -55,19 +45,28 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
         // The light sensor returns a single value.
         // Many sensors return 3 values, one for each axis.
         float accx = event.values[0];
-        Log.d("mylog", String.valueOf(accx));
+        float accy = event.values[1];
+        float accz = event.values[2];
+
+//        Log.d("mylog", String.valueOf(accx));
         // Do something with this sensor value.
+        setAcc(accx,accy,accz);
+
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        sensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL);
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        sensorManager.unregisterListener(this);
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        sensorManager.registerListener(this, mAcc, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
+    public void setAcc(float accx, float accy, float accz){
+        renderer.setAcc(accx,accy,accz);
+    }
 }

@@ -14,6 +14,9 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
     private final MyGLRenderer renderer;
     private SensorManager sensorManager;
     private Sensor mAcc;
+    private float gx, gy, gz, lax, lay, laz;
+    private float newVx, newVy, newVz, oldVx, oldVy, oldVz, distx, disty, distz;
+    public long timestamp;
 
     public MyGLSurfaceView(Context context){
         super(context);
@@ -45,7 +48,29 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
             float accx = event.values[0];
             float accy = event.values[1];
             float accz = event.values[2];
-            setAcc(accx,accy,accz);
+
+        float dT = (event.timestamp - timestamp) / 1000000000.0f;
+        timestamp = event.timestamp;
+
+        final float alpha = 0.8f;
+
+        gx = alpha * gx + (1 - alpha) * event.values[0];
+        gy = alpha * gy + (1 - alpha) * event.values[1];
+        gz = alpha * gz + (1 - alpha) * event.values[2];
+
+        lax = event.values[0] - gx;
+        lay = event.values[1] - gy;
+        laz = event.values[2] - gz;
+
+        newVx = oldVx + lax*dT;
+        newVy = oldVy + lay*dT;
+        newVz = oldVz + laz*dT;
+
+        distx = newVx*dT;
+        disty = newVy*dT;
+        distz = newVz*dT;
+
+        setDist(distx, disty, distz);
 
 
 
@@ -68,8 +93,8 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
         sensorManager.unregisterListener(this);
     }
 
-    public void setAcc(float accx, float accy, float accz){
-        renderer.setAcc(accx,accy,accz);
+    public void setDist(float distx, float disty, float distz){
+        renderer.setDist(distx,disty,distz);
     }
 
 

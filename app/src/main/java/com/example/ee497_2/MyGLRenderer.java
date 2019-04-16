@@ -23,7 +23,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[] projectionMatrix = new float[16];
     private final float[] viewMatrix = new float[16];
 
-    private float accx, accy, accz, magx, magy, magz;
+    private float distx, disty, distz;
 
     @Override
     public void onSurfaceCreated(GL10 unused, javax.microedition.khronos.egl.EGLConfig config) {
@@ -54,7 +54,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
 
 
-        Matrix.translateM(vPMatrix, 0, 0.5f, 0f, 0f);
+
+        Matrix.translateM(vPMatrix, 0, distx, disty, distz);
 
 
 //        Log.d("mylog","-----acceleration values------");
@@ -92,15 +93,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return shader;
     }
 
-    public void setAcc(float accx, float accy, float accz){
-        this.accx=accx;
-        this.accy=accy;
-        this.accz=accz;
+    public void setDist(float distx, float disty, float distz){
+        this.distx=distx;
+        this.disty=disty;
+        this.distz=distz;
     }
 
-    public void setMag(float magx, float magy, float magz){
-        this.magx=magx;
-        this.magy=magy;
-        this.magz=magz;
-    }
 }

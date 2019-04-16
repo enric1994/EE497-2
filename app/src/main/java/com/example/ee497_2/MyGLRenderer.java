@@ -53,24 +53,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Calculate the projection and view transformation
         Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
 
-        // Create a rotation transformation for the triangle
 
-        //Rotate X
-        Matrix.rotateM(vPMatrix, 0, accz*7 ,  1f, 0f, 0f);
-
-        //Rotate Y
-        Matrix.rotateM(vPMatrix, 0, magx*2 - 0f,  0f, -1f, 0f);
+        Matrix.translateM(vPMatrix, 0, 0.5f, 0f, 0f);
 
 
 //        Log.d("mylog","-----acceleration values------");
 //        Log.d("mylog",String.valueOf(accx));
 //        Log.d("mylog",String.valueOf(accy));
 //        Log.d("mylog",String.valueOf(accz));
-//
-//        Log.d("mylog","-----magnetic values------");
-//        Log.d("mylog",String.valueOf(magx));
-//        Log.d("mylog",String.valueOf(magy));
-//        Log.d("mylog",String.valueOf(magz));
+
 
         // Draw shape
         mTriangle.draw(vPMatrix);

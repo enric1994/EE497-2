@@ -13,8 +13,8 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
 
     private final MyGLRenderer renderer;
     private SensorManager sensorManager;
-    private Sensor mAcc;
-    public static float accx;
+    private Sensor mAcc, mMag;
+    public static float accx, accy, accz, magx, magy, magz;
 
     public MyGLSurfaceView(Context context){
         super(context);
@@ -32,6 +32,8 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         mAcc = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, mAcc, SensorManager.SENSOR_DELAY_NORMAL);
+        mMag = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        sensorManager.registerListener(this, mMag, SensorManager.SENSOR_DELAY_NORMAL);
         Log.d("mylog", "start GLSurfaceView");
 
     }
@@ -43,16 +45,29 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
 
 
     public final void onSensorChanged(SensorEvent event) {
-        // The light sensor returns a single value.
-        // Many sensors return 3 values, one for each axis.
-        float accx = event.values[0];
-        float accy = event.values[1];
-        float accz = event.values[2];
+        Sensor sensor = event.sensor;
+        if (sensor.getType() == 1) {
+            float accx = event.values[0];
+            float accy = event.values[1];
+            float accz = event.values[2];
+            setAcc(accx,accy,accz);
+//            Log.d("mylog",String.valueOf(sensor.getType()));
+        }
+        if (sensor.getType() == 2) {
+            float magx = event.values[0];
+            float magy = event.values[1];
+            float magz = event.values[2];
+            setMag(magx, magy, magz);
 
-//        Log.d("mylog", String.valueOf(accx));
+//            Log.d("mylog",String.valueOf(sensor.getType() ));
+
+        }
+
+
+
+//        Log.d("mylog", String.valueOf(event.values[3]));
 //        Log.d("mylog2", String.valueOf(accx));
         // Do something with this sensor value.
-        setAcc(accx,accy,accz);
 
     }
 
@@ -60,6 +75,8 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
     public void onResume() {
         super.onResume();
         sensorManager.registerListener(this, mAcc, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, mMag, SensorManager.SENSOR_DELAY_NORMAL);
+
     }
 
     @Override
@@ -71,6 +88,10 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
     public void setAcc(float accx, float accy, float accz){
         renderer.setAcc(accx,accy,accz);
     }
+    public void setMag(float magx, float magy, float magz){
+        renderer.setMag(magx,magy,magz);
+    }
+
 
 
 

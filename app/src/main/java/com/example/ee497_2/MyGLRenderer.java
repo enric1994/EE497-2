@@ -23,7 +23,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[] projectionMatrix = new float[16];
     private final float[] viewMatrix = new float[16];
 
-    private float accx, accy, accz;
+    private float accx, accy, accz, magx, magy, magz;
 
     @Override
     public void onSurfaceCreated(GL10 unused, javax.microedition.khronos.egl.EGLConfig config) {
@@ -44,6 +44,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Redraw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
 
+
         // Set the camera position (View matrix)
         Matrix.setLookAtM(viewMatrix, 0, 0, 0, -5, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
@@ -54,10 +55,22 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // Create a rotation transformation for the triangle
 
-        //Rotate
-        Matrix.rotateM(vPMatrix, 0, accx*10,  0f, 1f, 0f);
+        //Rotate X
+        Matrix.rotateM(vPMatrix, 0, accz*7 ,  1f, 0f, 0f);
 
-        Log.d("mylog",String.valueOf(accx));
+        //Rotate Y
+        Matrix.rotateM(vPMatrix, 0, magx*2 - 0f,  0f, -1f, 0f);
+
+
+//        Log.d("mylog","-----acceleration values------");
+//        Log.d("mylog",String.valueOf(accx));
+//        Log.d("mylog",String.valueOf(accy));
+//        Log.d("mylog",String.valueOf(accz));
+//
+//        Log.d("mylog","-----magnetic values------");
+//        Log.d("mylog",String.valueOf(magx));
+//        Log.d("mylog",String.valueOf(magy));
+//        Log.d("mylog",String.valueOf(magz));
 
         // Draw shape
         mTriangle.draw(vPMatrix);
@@ -92,5 +105,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.accx=accx;
         this.accy=accy;
         this.accz=accz;
+    }
+
+    public void setMag(float magx, float magy, float magz){
+        this.magx=magx;
+        this.magy=magy;
+        this.magz=magz;
     }
 }

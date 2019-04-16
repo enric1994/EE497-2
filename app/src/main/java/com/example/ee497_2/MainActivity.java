@@ -1,14 +1,17 @@
 package com.example.ee497_2;
 
+
 import android.opengl.GLSurfaceView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+
 public class MainActivity extends AppCompatActivity {
 
 
     private GLSurfaceView gLView;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -19,5 +22,7 @@ public class MainActivity extends AppCompatActivity {
         gLView = new MyGLSurfaceView(this);
         Log.d("mylog","Start Main Activity");
         setContentView(gLView);
+
+
     }
 }

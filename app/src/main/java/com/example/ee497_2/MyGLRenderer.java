@@ -1,10 +1,14 @@
 package com.example.ee497_2;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorManager;
 import android.opengl.EGLConfig;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
-import android.os.SystemClock;
+
 import android.util.Log;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -17,7 +21,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     // vPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] vPMatrix = new float[16];
     private final float[] projectionMatrix = new float[16];
-    //private final float[] projectionMatrix2 = new float[16];
     private final float[] viewMatrix = new float[16];
 
     private float accx, accy, accz;
@@ -30,8 +33,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mTriangle = new Triangle();
         // initialize a square
         mSquare = new Square();
+
+        Log.d("mylog", "Start Renderer");
+
+
     }
 
+    @Override
     public void onDrawFrame(GL10 unused) {
         // Redraw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
@@ -49,11 +57,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         //Rotate
         Matrix.rotateM(vPMatrix, 0, accx*10,  0f, 1f, 0f);
 
-        Log.d("mylog",String.valueOf(this.accx));
+        Log.d("mylog",String.valueOf(accx));
 
         // Draw shape
         mTriangle.draw(vPMatrix);
     }
+
 
 
     @Override

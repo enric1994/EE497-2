@@ -14,6 +14,7 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
     private final MyGLRenderer renderer;
     private SensorManager sensorManager;
     private Sensor mAcc;
+    public static float accx;
 
     public MyGLSurfaceView(Context context){
         super(context);
@@ -31,7 +32,7 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         mAcc = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, mAcc, SensorManager.SENSOR_DELAY_NORMAL);
-        Log.d("mylog", "start reading...");
+        Log.d("mylog", "start GLSurfaceView");
 
     }
 
@@ -40,7 +41,7 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
         // Do something here if sensor accuracy changes.
     }
 
-    @Override
+
     public final void onSensorChanged(SensorEvent event) {
         // The light sensor returns a single value.
         // Many sensors return 3 values, one for each axis.
@@ -49,6 +50,7 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
         float accz = event.values[2];
 
 //        Log.d("mylog", String.valueOf(accx));
+//        Log.d("mylog2", String.valueOf(accx));
         // Do something with this sensor value.
         setAcc(accx,accy,accz);
 
@@ -69,4 +71,7 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
     public void setAcc(float accx, float accy, float accz){
         renderer.setAcc(accx,accy,accz);
     }
+
+
+
 }

@@ -50,27 +50,31 @@ class MyGLSurfaceView extends GLSurfaceView implements SensorEventListener {
             float accz = event.values[2];
 
         float dT = (event.timestamp - timestamp) / 1000000000.0f;
-        timestamp = event.timestamp;
 
         final float alpha = 0.8f;
 
         gx = alpha * gx + (1 - alpha) * event.values[0];
-        gy = alpha * gy + (1 - alpha) * event.values[1];
+        gy = alpha * gy + (1 - alpha) * (event.values[1] - 9.81f);
         gz = alpha * gz + (1 - alpha) * event.values[2];
 
         lax = event.values[0] - gx;
-        lay = event.values[1] - gy;
+        lay = event.values[1] - gy - 9.81f;
         laz = event.values[2] - gz;
 
         newVx = oldVx + lax*dT;
         newVy = oldVy + lay*dT;
         newVz = oldVz + laz*dT;
 
-        distx = newVx*dT;
-        disty = newVy*dT;
-        distz = newVz*dT;
+        oldVx=newVx;
+        oldVy=newVy;
+        oldVz=newVz;
+
+        distx += newVx*dT;
+        disty += newVy*dT;
+        distz += newVz*dT;
 
         setDist(distx, disty, distz);
+        timestamp = event.timestamp;
 
 
 

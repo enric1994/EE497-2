@@ -58,10 +58,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.translateM(vPMatrix, 0, distx, disty, distz);
 
 
-//        Log.d("mylog","-----acceleration values------");
-//        Log.d("mylog",String.valueOf(accx));
-//        Log.d("mylog",String.valueOf(accy));
-//        Log.d("mylog",String.valueOf(accz));
+        Log.d("mylog","-----position values------");
+        Log.d("mylog",String.valueOf(distx));
+        Log.d("mylog",String.valueOf(disty));
+        Log.d("mylog",String.valueOf(distz));
 
 
         // Draw shape
